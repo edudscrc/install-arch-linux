@@ -219,11 +219,10 @@
   $ sudo pacman -S hyprland
   $ sudo pacman -S dunst xdg-desktop-portal-hyprland
   $ sudo pacman -S qt5-wayland qt6-wayland
-  $ yay -S hyprpolkitagent
+  $ yay -S hyprpolkitagent wlogout qimgv-git
   $ sudo pacman -S waybar rofi alacritty hyprlock
   $ sudo pacman -S hyprpaper cliphist thunar
-  $ sudo pacman -S wlogout tumbler ffmpegthumbnailer
-  $ yay -S qimgv-git
+  $ sudo pacman -S tumbler ffmpegthumbnailer
 </pre>
 
 ### 24. Setup your dotfiles...
