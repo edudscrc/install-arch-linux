@@ -196,6 +196,11 @@
   $ sudo pacman -S steam discord spotify-launcher fastfetch code
 </pre>
 
+### 26. Proper way to initialize Steam with HDR:
+<pre>
+  $ ENABLE_HDR_WSI=1 gamescope --fullscreen -w 2560 -h 1440 --force-grab-cursor --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 --steam -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 steam
+</pre>
+
 ### 26. Solving common bugs:
 <pre>
   In games with anticheat (Elden Ring, for example), you need to add the following parameters on Steam launch:
