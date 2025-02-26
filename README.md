@@ -10,7 +10,7 @@
   [iwd]# station wlan0 get-networks
   [iwd]# station wlan0 connect <Network's name>
   [iwd]# exit
-  $ ping google.com
+  $ ping archlinux.org
 </pre>
 
 ### 2. Synchronize packages:
@@ -30,32 +30,19 @@
   Command (m for help): <b>n</b>
   Partition number (1-128, default 1): <b>Enter</b>
   First sector (..., default 2048): <b>Enter</b>
-  Last sector ...: <b>+512M</b>
+  Last sector ...: <b>+1024M</b>
 
   <i>[create partition 2: <b>swap</b>]</i>
   Command (m for help): <b>n</b>
   Partition number (2-128, default 2): <b>Enter</b>
   First sector (..., default ...): <b>Enter</b>
-  Last sector ...: <b>+64G</b> <i>// Double size of your RAM</i>
+  Last sector ...: <b>+16G</b>
 
   <i>[create partition 3: <b>/</b>]</i>
   Command (m for help): <b>n</b>
   Partition number (3-128, default 3): <b>Enter</b>
   First sector (..., default ...): <b>Enter</b>
   Last sector ...: <b>Enter</b>
-
-  <i>[change partition types]</i>
-  Command (m for help): <b>t</b>
-  Partition number (1-3, default 1): <b>1</b>
-  Partion type or alias (type L to list all): <b>uefi</b>
-  
-  Command (m for help): <b>t</b>
-  Partition number (1-3, default 2): <b>2</b>
-  Partion type or alias (type L to list all): <b>swap</b>
-  
-  Command (m for help): <b>t</b>
-  Partition number (1-3, default 3): <b>3</b>
-  Partion type or alias (type L to list all): <b>linux</b>
 
   <i>[write partitioning to disk]</i>
   Command (m for help): <b>w</b>
@@ -79,8 +66,8 @@
 ### 6. Install essential packages into new filesystem and generate fstab:
 <pre>
   <i>[install amd-ucode for AMD chipset or intel-ucode for INTEL chipset]</i>
-  $ pacstrap -i /mnt base linux linux-firmware sudo nano amd-ucode
-  $ genfstab -U -p /mnt > /mnt/etc/fstab
+  $ pacstrap /mnt base linux linux-firmware amd-ucode base-devel grub efibootmgr nano networkmanager
+  $ genfstab -U /mnt > /mnt/etc/fstab
 </pre>
 
 ### 7. Basic configuration of new system:
@@ -109,31 +96,30 @@
       <i>%wheel ALL=(ALL) ALL</i>
 </pre>
 
-### 9. Install and setup GRUB:
+### 9. Enable networking:
 <pre>
-  $ pacman -S grub efibootmgr
-  $ grub-install /dev/nvme0n1
-  $ grub-mkconfig -o /boot/grub/grub.cfg
+  $ systemctl enable NetworkManager
 </pre>
 
-### 10. Setup networking:
+### 10. Install and setup GRUB:
 <pre>
-  $ pacman -S dhcpcd networkmanager resolvconf
-  $ systemctl enable dhcpcd
-  $ systemctl enable NetworkManager
-  $ systemctl enable systemd-resolved
+  $ efibootmgr -u
+  <i>[if you don't any boot devices after running the command above, type the command below]</i>
+  $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable
+  <i>[if the command "efibootmgr -u" showed boot devices, type the command below]</i>
+  $ grub-install /dev/nvme0n1
+  $ grub-mkconfig -o /boot/grub/grub.cfg
 </pre>
 
 ### 11. Exit chroot, unmount all disks and reboot:
 <pre>
   $ exit
-  $ umount /mnt/boot/efi
-  $ umount /mnt
+  $ umount -R /mnt
   $ reboot
 </pre>
 
 <h1 align="center">
-    Setup Hyprland
+    Setup Userspace and KDE
 </h1>
 
 ### 12. Activate time synchronization using NTP:
@@ -143,52 +129,17 @@
 
 ### 13. [Optional] Connect to Wi-Fi using nmcli:
 <pre>
-  $ nmcli device wifi connect <Network's name> password <Network's password>
+  $ nmcli device wifi connect &lt;Network's name&gt; password &lt;Network's password&gt;
 </pre>
 
-### 14. Install useful packages:
-<pre>
-  $ sudo pacman -S dbus base-devel git btop wget curl
-  $ sudo pacman -S openssh bash-completion fuse2
-  $ sudo pacman -S ripgrep fd python make eza
-  $ sudo pacman -S grim slurp firefox nwg-look
-  $ sudo pacman -S python-gobject lib32-systemd
-</pre>
-
-### 15. Install fonts:
-<pre>
-  $ sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation 
-  $ sudo pacman -S terminus-font ttf-font-awesome noto-fonts
-  $ sudo pacman -S noto-fonts-emoji ttf-ubuntu-font-family
-  $ sudo pacman -S ttf-roboto ttf-jetbrains-mono ttf-droid
-</pre>
-
-### 16. Enable multilib (32-bit packages):
+### 14. Enable multilib (32-bit packages):
 <pre>
   $ sudo nano /etc/pacman.conf
   <i>[uncomment [multilib] section]</i>
   $ sudo pacman -Sy
 </pre>
 
-### 17. Install sound drivers and sound support:
-<pre>
-  $ sudo pacman -S pipewire wireplumber pipewire-audio
-  $ sudo pacman -S pipewire-alsa pipewire-pulse pipewire-jack
-  $ sudo pacman -S lib32-pipewire
-</pre>
-
-### 18. [Optional] Enable bluetooth support:
-<pre>
-  $ sudo pacman -S bluez bluez-utils
-  $ sudo systemctl enable bluetooth
-</pre>
-
-### 19. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
-<pre>
-  $ sudo systemctl enable fstrim.timer
-</pre>
-
-### 20. Install GPU drivers (and packages for gaming):
+### 15. Install GPU drivers (and packages for gaming):
 <b>AMD</b>
 <pre>
   $ sudo pacman -S xf86-video-amdgpu mesa lib32-mesa
@@ -200,12 +151,12 @@
   $ sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils
 </pre>
 
-### 21. Reboot:
+### 16. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
 <pre>
-  $ reboot
+  $ sudo systemctl enable fstrim.timer
 </pre>
 
-### 22. Install yay:
+### 17. Install yay:
 <pre>
   $ git clone https://aur.archlinux.org/yay.git
   $ cd yay
@@ -214,34 +165,32 @@
   $ rm -r yay
 </pre>
 
-### 23. Install Hyprland:
+### 18. Install KDE Plasma and some useful packages:
 <pre>
-  $ sudo pacman -S hyprland
-  $ sudo pacman -S dunst xdg-desktop-portal-hyprland
-  $ sudo pacman -S qt5-wayland qt6-wayland
-  $ yay -S hyprpolkitagent wlogout qimgv-git
-  $ sudo pacman -S waybar rofi alacritty hyprlock
-  $ sudo pacman -S hyprpaper cliphist thunar
-  $ sudo pacman -S tumbler ffmpegthumbnailer
+  $ sudo pacman -S plasma sddm
+  $ sudo pacman -S konsole kate
+  $ sudo pacman -S git btop wget fd
 </pre>
 
-### 24. Setup your dotfiles...
-
-### 25. Install additional softwares:
+### 19. Reboot:
 <pre>
-  $ sudo pacman -S steam discord spotify-launcher fastfetch
-  $ yay -S pwvucontrol visual-studio-code-bin
-  <i>[install vencord]</i>
-  $ sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"
+  $ reboot
 </pre>
 
-### 26. Solving common bugs:
+### 20. Install additional softwares:
+<pre>
+  $ sudo pacman -S steam discord spotify-launcher fastfetch code
+</pre>
+
+### 21. Proper way to initialize Steam with HDR:
+<pre>
+  $ ENABLE_HDR_WSI=1 gamescope --fullscreen -w 2560 -h 1440 --force-grab-cursor --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 --steam -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 steam
+</pre>
+
+### 22. Solving common bugs:
 <pre>
   In games with anticheat (Elden Ring, for example), you need to add the following parameters on Steam launch:
   <b>env --unset=SDL_VIDEODRIVER %command%</b>
-
-  If some electron apps don't open (vscode, discord...):
-  <b>open nwg-look. On "Mouse cursor" section, just click on any theme. This will solve the bug.</b>
 
   If you're experiencing a connect problem on Ubisoft Connect, install the following package:
   <b>$ sudo pacman -S lib32-gnutls</b>
