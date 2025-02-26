@@ -168,7 +168,7 @@
 ### 18. Install KDE Plasma and some useful packages:
 <pre>
   $ sudo pacman -S plasma sddm
-  $ sudo pacman -S konsole kate
+  $ sudo pacman -S konsole kate dolphin
   <i>[bluedevil is the KDE's Bluetooth tool]</i>
   $ sudo pacman -S bluedevil
   $ sudo pacman -S git btop wget fd bash-completion
