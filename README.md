@@ -181,7 +181,8 @@
 
 ### 20. Install additional softwares:
 <pre>
-  $ sudo pacman -S steam discord spotify-launcher fastfetch code
+  $ sudo pacman -S steam discord fastfetch code
+  $ yay -S spotify
 </pre>
 
 ### 21. Proper way to initialize Steam with HDR:
