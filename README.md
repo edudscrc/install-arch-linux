@@ -168,7 +168,7 @@
 ### 18. Install KDE Plasma and some useful packages:
 <pre>
   $ sudo pacman -S plasma sddm
-  $ sudo pacman -S konsole kate dolphin
+  $ sudo pacman -S konsole kate dolphin mpv
   <i>[bluedevil is the KDE's Bluetooth tool]</i>
   $ sudo pacman -S bluedevil
   $ sudo pacman -S git btop wget fd bash-completion
@@ -186,16 +186,12 @@
   $ yay -S spotify
 </pre>
 
-### 21. Proper way to initialize Steam with HDR:
+### 21. Install HDR utilities and how to use it:
 <pre>
-  $ ENABLE_HDR_WSI=1 gamescope --fullscreen -w 2560 -h 1440 --force-grab-cursor --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 --steam -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 steam
-</pre>
-
-### 22. Solving common bugs:
-<pre>
-  In games with anticheat (Elden Ring, for example), you need to add the following parameters on Steam launch:
-  <b>env --unset=SDL_VIDEODRIVER %command%</b>
-
-  If you're experiencing a connect problem on Ubisoft Connect, install the following package:
-  <b>$ sudo pacman -S lib32-gnutls</b>
+  $ sudo pacman -S gamescope
+  $ yay -S vk-hdr-layer-kwin6-git
+  <i>In Steam, to enable HDR for a single game, set the following Launch options:</i>
+  DXVK_HDR=1 gamescope -f -W 2560 -H 1440 --force-grab-cursor --hdr-enabled -- %command%
+  <i>To play a video with HDR using MPV:</i>
+  $ ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
 </pre>
