@@ -103,6 +103,10 @@
 
 ### 10. Install and setup GRUB:
 <pre>
+  $ efibootmgr -u
+  <i>[if you don't any boot devices after running the command above, type the command below]</i>
+  $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable
+  <i>[if the command "efibootmgr -u" showed boot devices, type the command below]</i>
   $ grub-install /dev/nvme0n1
   $ grub-mkconfig -o /boot/grub/grub.cfg
 </pre>
@@ -135,37 +139,7 @@
   $ sudo pacman -Sy
 </pre>
 
-### 15. Install useful packages:
-<pre>
-  $ sudo pacman -S plasma sddm
-  $ sudo pacman -S konsole kate --needed
-  $ sudo pacman -S lib32-systemd --needed
-</pre>
-
-### 16. Install fonts:
-<pre>
-  $ sudo pacman -S ttf-liberation --needed
-</pre>
-
-### 17. Install sound drivers and sound support:
-<pre>
-  $ sudo pacman -S pipewire wireplumber pipewire-audio
-  $ sudo pacman -S pipewire-alsa pipewire-pulse pipewire-jack
-  $ sudo pacman -S lib32-pipewire
-</pre>
-
-### 18. [Optional] Enable bluetooth support:
-<pre>
-  $ sudo pacman -S bluez bluez-utils
-  $ sudo systemctl enable bluetooth
-</pre>
-
-### 19. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
-<pre>
-  $ sudo systemctl enable fstrim.timer
-</pre>
-
-### 20. Install GPU drivers (and packages for gaming):
+### 15. Install GPU drivers (and packages for gaming):
 <b>AMD</b>
 <pre>
   $ sudo pacman -S xf86-video-amdgpu mesa lib32-mesa
@@ -177,12 +151,12 @@
   $ sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils
 </pre>
 
-### 21. Reboot:
+### 16. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
 <pre>
-  $ reboot
+  $ sudo systemctl enable fstrim.timer
 </pre>
 
-### 22. Install yay:
+### 17. Install yay:
 <pre>
   $ git clone https://aur.archlinux.org/yay.git
   $ cd yay
@@ -191,17 +165,47 @@
   $ rm -r yay
 </pre>
 
-### 25. Install additional softwares:
+### 18. Install useful packages:
+<pre>
+  $ sudo pacman -S plasma sddm
+  $ sudo pacman -S konsole kate --needed
+  $ sudo pacman -S lib32-systemd --needed
+</pre>
+
+### 19. Install fonts:
+<pre>
+  $ sudo pacman -S ttf-liberation --needed
+</pre>
+
+### 20. Install sound drivers and sound support:
+<pre>
+  $ sudo pacman -S pipewire wireplumber pipewire-audio
+  $ sudo pacman -S pipewire-alsa pipewire-pulse pipewire-jack
+  $ sudo pacman -S lib32-pipewire
+</pre>
+
+### 21. [Optional] Enable bluetooth support:
+<pre>
+  $ sudo pacman -S bluez bluez-utils
+  $ sudo systemctl enable bluetooth
+</pre>
+
+### 22. Reboot:
+<pre>
+  $ reboot
+</pre>
+
+### 23. Install additional softwares:
 <pre>
   $ sudo pacman -S steam discord spotify-launcher fastfetch code
 </pre>
 
-### 26. Proper way to initialize Steam with HDR:
+### 24. Proper way to initialize Steam with HDR:
 <pre>
   $ ENABLE_HDR_WSI=1 gamescope --fullscreen -w 2560 -h 1440 --force-grab-cursor --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 --steam -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 steam
 </pre>
 
-### 26. Solving common bugs:
+### 25. Solving common bugs:
 <pre>
   In games with anticheat (Elden Ring, for example), you need to add the following parameters on Steam launch:
   <b>env --unset=SDL_VIDEODRIVER %command%</b>
