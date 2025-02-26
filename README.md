@@ -171,7 +171,7 @@
   $ sudo pacman -S konsole kate
   <i>[bluedevil is the KDE's Bluetooth tool]</i>
   $ sudo pacman -S bluedevil
-  $ sudo pacman -S git btop wget fd
+  $ sudo pacman -S git btop wget fd bash-completion
 </pre>
 
 ### 19. Reboot:
