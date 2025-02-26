@@ -182,9 +182,9 @@
 
 ### 20. Install additional softwares:
 <pre>
-  $ sudo pacman -S steam discord fastfetch
-  $ sudo pacman -S code qbittorrent
-  $ yay -S spotify
+  $ sudo pacman -S steam discord
+  $ sudo pacman -S fastfetch qbittorrent
+  $ yay -S spotify visual-studio-code-bin
 </pre>
 
 ### 21. Install HDR utilities and how to use it:
