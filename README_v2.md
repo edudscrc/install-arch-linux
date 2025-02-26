@@ -165,47 +165,29 @@
   $ rm -r yay
 </pre>
 
-### 18. Install useful packages:
+### 18. Install KDE Plasma and some useful packages:
 <pre>
   $ sudo pacman -S plasma sddm
-  $ sudo pacman -S konsole kate --needed
-  $ sudo pacman -S lib32-systemd --needed
+  $ sudo pacman -S konsole kate
+  $ sudo pacman -S git btop wget fd
 </pre>
 
-### 19. Install fonts:
-<pre>
-  $ sudo pacman -S ttf-liberation --needed
-</pre>
-
-### 20. Install sound drivers and sound support:
-<pre>
-  $ sudo pacman -S pipewire wireplumber pipewire-audio
-  $ sudo pacman -S pipewire-alsa pipewire-pulse pipewire-jack
-  $ sudo pacman -S lib32-pipewire
-</pre>
-
-### 21. [Optional] Enable bluetooth support:
-<pre>
-  $ sudo pacman -S bluez bluez-utils
-  $ sudo systemctl enable bluetooth
-</pre>
-
-### 22. Reboot:
+### 19. Reboot:
 <pre>
   $ reboot
 </pre>
 
-### 23. Install additional softwares:
+### 20. Install additional softwares:
 <pre>
   $ sudo pacman -S steam discord spotify-launcher fastfetch code
 </pre>
 
-### 24. Proper way to initialize Steam with HDR:
+### 21. Proper way to initialize Steam with HDR:
 <pre>
   $ ENABLE_HDR_WSI=1 gamescope --fullscreen -w 2560 -h 1440 --force-grab-cursor --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 --steam -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 steam
 </pre>
 
-### 25. Solving common bugs:
+### 22. Solving common bugs:
 <pre>
   In games with anticheat (Elden Ring, for example), you need to add the following parameters on Steam launch:
   <b>env --unset=SDL_VIDEODRIVER %command%</b>
