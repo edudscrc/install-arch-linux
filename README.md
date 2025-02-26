@@ -182,7 +182,8 @@
 
 ### 20. Install additional softwares:
 <pre>
-  $ sudo pacman -S steam discord fastfetch code
+  $ sudo pacman -S steam discord fastfetch
+  $ sudo pacman -S code qbittorrent
   $ yay -S spotify
 </pre>
 
