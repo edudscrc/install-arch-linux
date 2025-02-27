@@ -171,7 +171,8 @@
   $ sudo pacman -S konsole kate dolphin mpv
   <i>[bluedevil is the KDE's Bluetooth tool]</i>
   $ sudo pacman -S bluedevil
-  $ sudo pacman -S git btop wget fd bash-completion
+  $ sudo pacman -S git btop wget fd
+  $ sudo pacman -S bash-completion openssh
   $ yay -S qimgv-git
 </pre>
 
