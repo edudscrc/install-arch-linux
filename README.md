@@ -197,7 +197,10 @@
   DXVK_HDR=1 gamescope -f -W 2560 -H 1440 --force-grab-cursor --hdr-enabled -- %command%
   
   <i>To play a video with HDR using MPV:</i>
-  $ ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
+  $ sudo nano /etc/environment
+  <i>[Add the following line:]</i>
+  ENABLE_HDR_WSI=1
+  $ mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
 </pre>
 
 ### 22. Fix cedilla on us-intl with dead keys:
