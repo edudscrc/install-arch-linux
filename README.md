@@ -174,6 +174,8 @@
   $ sudo pacman -S git btop wget fd
   $ sudo pacman -S bash-completion openssh
   $ yay -S qimgv-git
+  $ sudo systemctl enable bluetooth.service
+  $ sudo systemctl start bluetooth.service
 </pre>
 
 ### 19. Reboot:
