@@ -156,16 +156,7 @@
   $ sudo systemctl enable fstrim.timer
 </pre>
 
-### 17. Install yay:
-<pre>
-  $ git clone https://aur.archlinux.org/yay.git
-  $ cd yay
-  $ makepkg -si
-  $ cd ..
-  $ rm -r yay
-</pre>
-
-### 18. Install KDE Plasma and some useful packages:
+### 17. Install KDE Plasma and some useful packages:
 <pre>
   $ sudo pacman -S plasma sddm
   $ sudo pacman -S konsole kate dolphin mpv
@@ -173,9 +164,18 @@
   $ sudo pacman -S bluedevil
   $ sudo pacman -S git btop wget fd
   $ sudo pacman -S bash-completion openssh
-  $ yay -S qimgv-git
   $ sudo systemctl enable bluetooth.service
   $ sudo systemctl start bluetooth.service
+</pre>
+
+### 18. Install yay and a fast image viewer:
+<pre>
+  $ git clone https://aur.archlinux.org/yay.git
+  $ cd yay
+  $ makepkg -si
+  $ cd ..
+  $ rm -r yay
+  $ yay -S qimgv-git
 </pre>
 
 ### 19. Reboot:
