@@ -217,3 +217,9 @@
   GTK_IM_MODULE=cedilla
   QT_IM_MODULE=cedilla
 </pre>
+
+### 23. Add permission to serial ports:
+<pre>
+  $ usermod -a -G uucp $USER
+  $ reboot
+</pre>
