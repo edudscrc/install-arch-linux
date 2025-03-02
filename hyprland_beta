@@ -160,7 +160,9 @@
 <pre>
   $ sudo pacman -S hyprland kitty
   $ sudo pacman -S dunst xdg-desktop-portal-hyprland
-  $ sudo pacman -S dbus
+  $ sudo pacman -S dbus hyprpolkitagent
+  $ sudo pacman -S qt5-wayland qt6-wayland
+  $ sudo pacman -S waybar
   $ sudo pacman -S dolphin mpv
   $ sudo pacman -S git btop wget fd
   $ sudo pacman -S bash-completion openssh
