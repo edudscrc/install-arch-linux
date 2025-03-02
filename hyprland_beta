@@ -159,6 +159,8 @@
 ### 17. Install Hyprland and some useful packages:
 <pre>
   $ sudo pacman -S hyprland kitty
+  $ sudo pacman -S dunst xdg-desktop-portal-hyprland
+  $ sudo pacman -S dbus
   $ sudo pacman -S dolphin mpv
   $ sudo pacman -S git btop wget fd
   $ sudo pacman -S bash-completion openssh
