@@ -163,7 +163,7 @@
   $ sudo pacman -S dbus hyprpolkitagent
   $ sudo pacman -S qt5-wayland qt6-wayland
   $ sudo pacman -S waybar hyprpaper rofi
-  $ sudo pacman -S dolphin mpv
+  $ sudo pacman -S dolphin mpv hyprshot
   $ sudo pacman -S git btop wget fd
   $ sudo pacman -S bash-completion openssh
   $ sudo systemctl enable bluetooth.service
