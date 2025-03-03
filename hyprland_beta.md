@@ -166,6 +166,7 @@
   $ sudo pacman -S dolphin mpv hyprshot
   $ sudo pacman -S git btop wget fd curl
   $ sudo pacman -S bash-completion openssh
+  $ sudo pacman -S noto-fonts-cjk
 </pre>
 
 ### 17.1. Install sound drivers and sound support:
