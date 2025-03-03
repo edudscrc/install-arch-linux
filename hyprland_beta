@@ -158,16 +158,14 @@
 
 ### 17. Install Hyprland and some useful packages:
 <pre>
-  $ sudo pacman -S hyprland kitty
-  $ sudo pacman -S dunst xdg-desktop-portal-hyprland
+  $ sudo pacman -S hyprland kitty dunst
+  $ sudo pacman -S xdg-desktop-portal-hyprland
   $ sudo pacman -S dbus hyprpolkitagent
   $ sudo pacman -S qt5-wayland qt6-wayland
   $ sudo pacman -S waybar hyprpaper rofi
   $ sudo pacman -S dolphin mpv hyprshot
-  $ sudo pacman -S git btop wget fd
+  $ sudo pacman -S git btop wget fd curl
   $ sudo pacman -S bash-completion openssh
-  $ sudo systemctl enable bluetooth.service
-  $ sudo systemctl start bluetooth.service
 </pre>
 
 ### 17.1. Install sound drivers and sound support:
