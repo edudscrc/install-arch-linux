@@ -204,6 +204,12 @@
   $ yay -S spotify visual-studio-code-bin
 </pre>
 
+### 20.1. Fix dolphin setting default app:
+<pre>
+  $ sudo pacman -S archlinux-xdg-menu
+  $ XDG_MENU_PREFIX=arch- kbuildsycoca6 --noincremental
+</pre>
+
 ### 21. Install HDR utilities and how to use it:
 <pre>
   $ sudo pacman -S gamescope
