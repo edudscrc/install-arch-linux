@@ -234,15 +234,12 @@
 
 ### Fix cedilla on us-intl with dead keys:
 <pre>
-  $ sudo nano /usr/lib/gtk-3.0/3.0.0/immodules.cache
-  <i>[Find the lines starting with "cedilla" "Cedilla" and add :en to the line]</i>
+  $ sudo pacman -S fcitx5
+  <i>[Add it to exec-once on hyprland.conf]</i>
+  exec-once = fcitx5
 
-  $ sudo sed -i /usr/share/X11/locale/en_US.UTF-8/Compose -e 's/ć/ç/g' -e 's/Ć/Ç/g'
-
-  $ sudo nano /etc/environment
-  <i>[Add the following lines:]</i>
-  GTK_IM_MODULE=cedilla
-  QT_IM_MODULE=cedilla
+  <i>To fix cedilla on Google Chrome, run it with the following parameter:</i>
+  $ google-chrome-stable --enable-wayland-ime
 </pre>
 
 ### Add permission to serial ports:
