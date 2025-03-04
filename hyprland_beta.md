@@ -4,7 +4,7 @@
 <li>Boot it (make sure <b>secure boot</b> is disabled).</li>
 </ol>
 
-### 1. [Optional] Connect to Wi-Fi (on Ethernet, you don't have to do this):
+### [Optional] Connect to Wi-Fi (on Ethernet, you don't have to do this):
 <pre>
   $ iwctl
   [iwd]# station wlan0 get-networks
@@ -13,12 +13,12 @@
   $ ping archlinux.org
 </pre>
 
-### 2. Synchronize packages:
+### Synchronize packages:
 <pre>
   $ pacman -Syy
 </pre>
 
-### 3. Disk partitioning (using fdisk):
+### Disk partitioning (using fdisk):
 <pre>
   $ fdisk /dev/nvme0n1
   <i>[repeat this command until existing partitions are deleted]</i>
@@ -48,14 +48,14 @@
   Command (m for help): <b>w</b>
 </pre>
 
-### 4. Create filesystems on created disk partitions:
+### Create filesystems on created disk partitions:
 <pre>
   $ mkfs.fat -F 32 /dev/nvme0n1p1
   $ mkswap /dev/nvme0n1p2
   $ mkfs -t ext4 /dev/nvme0n1p3
 </pre>
 
-### 5. Mount all filesystems to /mnt:
+### Mount all filesystems to /mnt:
 <pre>
   $ mount /dev/nvme0n1p3 /mnt
   $ mkdir -p /mnt/boot/efi
@@ -63,14 +63,14 @@
   $ swapon /dev/nvme0n1p2
 </pre>
 
-### 6. Install essential packages into new filesystem and generate fstab:
+### Install essential packages into new filesystem and generate fstab:
 <pre>
   <i>[install amd-ucode for AMD chipset or intel-ucode for INTEL chipset]</i>
   $ pacstrap /mnt base linux linux-firmware amd-ucode base-devel grub efibootmgr nano networkmanager
   $ genfstab -U /mnt > /mnt/etc/fstab
 </pre>
 
-### 7. Basic configuration of new system:
+### Basic configuration of new system:
 <pre>
   $ arch-chroot /mnt
   <i>[uncomment your locales, i.e. 'en_US.UTF-8' or 'pt_BR.UTF-8']</i>
@@ -81,7 +81,7 @@
   $ hwclock --systohc
 </pre>
 
-### 8. Setup hostname and usernames:
+### Setup hostname and usernames:
 <pre>
   $ echo <i>yourhostname</i> > /etc/hostname
   $ nano /etc/hosts
@@ -96,12 +96,12 @@
       <i>%wheel ALL=(ALL) ALL</i>
 </pre>
 
-### 9. Enable networking:
+### Enable networking:
 <pre>
   $ systemctl enable NetworkManager
 </pre>
 
-### 10. Install and setup GRUB:
+### Install and setup GRUB:
 <pre>
   $ efibootmgr -u
   <i>[if you don't any boot devices after running the command above, type the command below]</i>
@@ -111,7 +111,7 @@
   $ grub-mkconfig -o /boot/grub/grub.cfg
 </pre>
 
-### 11. Exit chroot, unmount all disks and reboot:
+### Exit chroot, unmount all disks and reboot:
 <pre>
   $ exit
   $ umount -R /mnt
@@ -122,24 +122,24 @@
     Setup Userspace and Hyprland
 </h1>
 
-### 12. Activate time synchronization using NTP:
+### Activate time synchronization using NTP:
 <pre>
   $ timedatectl set-ntp true
 </pre>
 
-### 13. [Optional] Connect to Wi-Fi using nmcli:
+### [Optional] Connect to Wi-Fi using nmcli:
 <pre>
   $ nmcli device wifi connect &lt;Network's name&gt; password &lt;Network's password&gt;
 </pre>
 
-### 14. Enable multilib (32-bit packages):
+### Enable multilib (32-bit packages):
 <pre>
   $ sudo nano /etc/pacman.conf
   <i>[uncomment [multilib] section]</i>
   $ sudo pacman -Sy
 </pre>
 
-### 15. Install GPU drivers (and packages for gaming):
+### Install GPU drivers (and packages for gaming):
 <b>AMD</b>
 <pre>
   $ sudo pacman -S xf86-video-amdgpu mesa lib32-mesa
@@ -151,12 +151,27 @@
   $ sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils
 </pre>
 
-### 16. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
+### [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
 <pre>
   $ sudo systemctl enable fstrim.timer
 </pre>
 
-### 17. Install Hyprland and some useful packages:
+### Install useful packages:
+<pre>
+  $ sudo pacman -S git btop wget fd curl
+  $ sudo pacman -S bash-completion openssh
+</pre>
+
+### Install yay:
+<pre>
+  $ git clone https://aur.archlinux.org/yay.git
+  $ cd yay
+  $ makepkg -si
+  $ cd ..
+  $ rm -r yay
+</pre>
+
+### Install Hyprland and some useful packages:
 <pre>
   $ sudo pacman -S hyprland kitty dunst
   $ sudo pacman -S xdg-desktop-portal-hyprland
@@ -164,54 +179,45 @@
   $ sudo pacman -S qt5-wayland qt6-wayland
   $ sudo pacman -S waybar hyprpaper rofi
   $ sudo pacman -S dolphin mpv hyprshot
-  $ sudo pacman -S git btop wget fd curl
-  $ sudo pacman -S bash-completion openssh
-  $ sudo pacman -S noto-fonts-cjk
+  $ sudo pacman -S noto-fonts-cjk ttf-jetbrains-mono
+  $ sudo pacman -S ttf-jetbrains-mono-nerd
+  $ sudo pacman -S ttf-liberation otf-font-awesome
+  $ yay -S qimgv-git
 </pre>
 
-### 17.1. Install sound drivers and sound support:
+### Install sound drivers and sound support:
 <pre>
   $ sudo pacman -S pipewire wireplumber pipewire-audio
   $ sudo pacman -S pipewire-alsa pipewire-pulse pipewire-jack
   $ sudo pacman -S lib32-pipewire pavucontrol
 </pre>
 
-### 17.2. Enable bluetooth support:
+### Enable bluetooth support:
 <pre>
   $ sudo pacman -S bluez bluez-utils
   $ sudo systemctl enable bluetooth
 </pre>
 
-### 18. Install yay and a fast image viewer: $ sudo pacman -S bluez bluez-utils
-  $ sudo systemctl enable bluetooth
-<pre>
-  $ git clone https://aur.archlinux.org/yay.git
-  $ cd yay
-  $ makepkg -si
-  $ cd ..
-  $ rm -r yay
-  $ yay -S qimgv-git
-</pre>
-
-### 19. Reboot:
+### Reboot:
 <pre>
   $ reboot
 </pre>
 
-### 20. Install additional softwares:
+### Install additional softwares:
 <pre>
   $ sudo pacman -S steam discord
   $ sudo pacman -S fastfetch qbittorrent
   $ yay -S spotify visual-studio-code-bin
+  $ yay -S google-chrome
 </pre>
 
-### 20.1. Fix dolphin setting default app:
+### Fix dolphin setting default app:
 <pre>
   $ sudo pacman -S archlinux-xdg-menu
   $ XDG_MENU_PREFIX=arch- kbuildsycoca6 --noincremental
 </pre>
 
-### 21. Install HDR utilities and how to use it:
+### Install HDR utilities and how to use it:
 <pre>
   $ sudo pacman -S gamescope
   $ yay -S vk-hdr-layer-kwin6-git
@@ -226,7 +232,7 @@
   $ mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
 </pre>
 
-### 22. Fix cedilla on us-intl with dead keys:
+### Fix cedilla on us-intl with dead keys:
 <pre>
   $ sudo nano /usr/lib/gtk-3.0/3.0.0/immodules.cache
   <i>[Find the lines starting with "cedilla" "Cedilla" and add :en to the line]</i>
@@ -239,7 +245,7 @@
   QT_IM_MODULE=cedilla
 </pre>
 
-### 23. Add permission to serial ports:
+### Add permission to serial ports:
 <pre>
   $ usermod -a -G uucp $USER
   $ reboot
