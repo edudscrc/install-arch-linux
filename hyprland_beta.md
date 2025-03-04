@@ -178,10 +178,11 @@
   $ sudo pacman -S dbus hyprpolkitagent
   $ sudo pacman -S qt5-wayland qt6-wayland
   $ sudo pacman -S waybar hyprpaper rofi
-  $ sudo pacman -S dolphin mpv hyprshot
+  $ sudo pacman -S thunar mpv hyprshot
   $ sudo pacman -S noto-fonts-cjk ttf-jetbrains-mono
   $ sudo pacman -S ttf-jetbrains-mono-nerd
   $ sudo pacman -S ttf-liberation otf-font-awesome
+  $ sudo pacman -S gvfs tumbler ffmpegthumbnailer
   $ yay -S qimgv-git
 </pre>
 
@@ -209,12 +210,6 @@
   $ sudo pacman -S fastfetch qbittorrent
   $ yay -S spotify visual-studio-code-bin
   $ yay -S google-chrome
-</pre>
-
-### Fix dolphin setting default app:
-<pre>
-  $ sudo pacman -S archlinux-xdg-menu
-  $ XDG_MENU_PREFIX=arch- kbuildsycoca6 --noincremental
 </pre>
 
 ### Install HDR utilities and how to use it:
