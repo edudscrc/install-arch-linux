@@ -1,0 +1,128 @@
+/*
+* * * * * * * * * * * * * * * * * * * * * * * * *
+* Author: Eduardo de Sá Coêlho Ribeiro Costa   	*
+* Github: edudscrc							   	*
+*											   	*
+* Waybar v0.12.0						   	    *
+* * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+{
+    "spacing": 12,
+    "margin": 0,
+
+    "modules-left": [
+        "custom/archicon",
+        "hyprland/workspaces",
+        "custom/spotify",
+        "tray"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "temperature",
+        "pulseaudio#sound",
+        "group/group-end"
+    ],
+
+    "custom/archicon": {
+        "format": "<span size='15000'></span>",
+        "tooltip": false,
+        "on-click": "rofi -show drun"
+    },
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": []
+        }
+    },
+    "custom/spotify": {
+    	"format": "{}",
+   	    "exec": "/usr/bin/python3 /home/edudscrc/HyprlandScripts/mediaplayer.py --player spotify",
+   	    "return-type": "json",
+   	    "on-click": "playerctl -p spotify play-pause",
+   	    "on-scroll-up": "playerctl -p spotify next",
+   	    "on-scroll-down": "playerctl -p spotify previous"
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 6,
+        "tooltip": false
+    },
+
+    "clock": {
+        "interval": 30,
+        "format": "{:%a %d %b %H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+        	"mode": "month",
+        	"format": {
+        		"months": "<span color='#fab387'><b>{}</b></span>",
+                "days": "<span color='#b4befe'><b>{}</b></span>",
+                "weekdays": "<span color='#eba0ac'><b>{}</b></span>",
+                "today": "<span color='#a6e3a1'><b>{}</b></span>"
+        	}
+        },
+        "actions": {
+            "on-click": "shift_reset",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "temperature": {
+        "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp3_input",
+    	"interval": 2,
+    	"format": " {temperatureC}°C",
+        "on-click": "kitty -e btop",
+    	"tooltip": false
+    },
+    "pulseaudio#sound": {
+	    "format": "{icon} {volume}%",
+        "format-muted": " {volume}%",
+        "format-icons": {
+            "default": ["", "", " "]
+        },
+        "on-click": "~/HyprlandScripts/volume_notify.sh mute",
+        "on-click-right": "pavucontrol",
+        "on-scroll-down": "~/HyprlandScripts/volume_notify.sh down",
+        "on-scroll-up": "~/HyprlandScripts/volume_notify.sh up",
+        "tooltip": false
+    },
+    "group/group-end": {
+        "orientation": "horizontal",
+        "modules": [
+            "bluetooth",
+            "network",
+            "custom/lock",
+            "custom/power"
+        ]
+    },
+    "bluetooth": {
+        "format-disabled": "",
+        "format-off": "<span size='15000'>󰂲</span>",
+        "format-on": "<span size='15000'>󰂯</span>",
+        "format-connected": "<span size='15000'>󰂱</span>",
+        "on-click-right": "bluetoothctl disconnect",
+        "on-click": "kitty -e bluetoothctl",
+        "tooltip-format-connected": "{device_alias}\t{device_address}"
+    },
+    "network": {
+    	"interval": 60,
+        "format-wifi": "",
+        "format-ethernet": "",
+        "format-disconnected": "",
+        "tooltip-format-ethernet": "{ifname}",
+        "tooltip-format-wifi": "{essid}"
+    },
+    "custom/power": {
+    	"format": "{icon}",
+		"format-icons": "",
+		"on-click": "wlogout",
+    	"tooltip": false
+    }
+}
