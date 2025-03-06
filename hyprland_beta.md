@@ -104,7 +104,7 @@
 ### Install and setup GRUB:
 <pre>
   $ efibootmgr -u
-  <i>[if you don't any boot devices after running the command above, type the command below]</i>
+  <i>[if you don't see any boot devices after running the command above, type the command below]</i>
   $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable
   <i>[if the command "efibootmgr -u" showed boot devices, type the command below]</i>
   $ grub-install /dev/nvme0n1
@@ -158,7 +158,7 @@
 
 ### Install useful packages:
 <pre>
-  $ sudo pacman -S git btop wget fd curl
+  $ sudo pacman -S git btop wget fd curl unzip
   $ sudo pacman -S bash-completion openssh
 </pre>
 
@@ -173,17 +173,22 @@
 
 ### Install Hyprland and some useful packages:
 <pre>
-  $ sudo pacman -S hyprland kitty dunst
+  $ sudo pacman -S hyprland kitty
   $ sudo pacman -S xdg-desktop-portal-hyprland
   $ sudo pacman -S dbus hyprpolkitagent
   $ sudo pacman -S qt5-wayland qt6-wayland
-  $ sudo pacman -S waybar hyprpaper rofi
-  $ sudo pacman -S thunar mpv hyprshot
+  $ sudo pacman -S waybar hyprpaper
+  $ sudo pacman -S thunar mpv rofi
+  $ sudo pacman -S gvfs tumbler ffmpegthumbnailer
+  $ yay -S qimgv-git wlogout hyprshot
+</pre>
+
+### Install necessary fonts:
+<pre>
+  $ sudo pacman -S noto-fonts noto-fonts-emoji
   $ sudo pacman -S noto-fonts-cjk ttf-jetbrains-mono
   $ sudo pacman -S ttf-jetbrains-mono-nerd
   $ sudo pacman -S ttf-liberation otf-font-awesome
-  $ sudo pacman -S gvfs tumbler ffmpegthumbnailer
-  $ yay -S qimgv-git
 </pre>
 
 ### Install sound drivers and sound support:
@@ -199,11 +204,6 @@
   $ sudo systemctl enable bluetooth
 </pre>
 
-### Reboot:
-<pre>
-  $ reboot
-</pre>
-
 ### Install additional softwares:
 <pre>
   $ sudo pacman -S steam discord
@@ -212,18 +212,23 @@
   $ yay -S google-chrome
 </pre>
 
+### Reboot:
+<pre>
+  $ reboot
+</pre>
+
 ### Install HDR utilities and how to use it:
 <pre>
   $ sudo pacman -S gamescope
   $ yay -S vk-hdr-layer-kwin6-git
   
-  <i>In Steam, to enable HDR for a single game, set the following Launch options:</i>
+  <i>[In Steam, to enable HDR for a single game, set the following Launch options]</i>
   DXVK_HDR=1 gamescope -f -W 2560 -H 1440 --force-grab-cursor --hdr-enabled -- %command%
   
-  <i>To play a video with HDR using MPV:</i>
-  $ sudo nano /etc/environment
-  <i>[Add the following line:]</i>
+  <i>[To play a video with HDR using MPV, do the following]</i>
+  <i>[1. Add the following environment variable]</i>
   ENABLE_HDR_WSI=1
+  <i>[2. Play the video using the command below]</i>
   $ mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
 </pre>
 
@@ -233,10 +238,10 @@
   <i>[Add it to exec-once on hyprland.conf]</i>
   exec-once = fcitx5
 
-  <i>[To fix cedilla on Google Chrome, run it with the following parameter:]</i>
+  <i>[To fix cedilla on Google Chrome, run it with the following parameter]</i>
   $ google-chrome-stable --enable-wayland-ime
 
-  <i>[To make it permanent:]</i>
+  <i>[To make it permanent]</i>
   $ sudo nano /usr/share/applications/google-chrome.desktop
   Exec=/usr/bin/google-chrome-stable --enable-wayland-ime %U
 </pre>
