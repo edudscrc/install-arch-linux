@@ -1,10 +1,13 @@
+# Arch Linux + KDE Plasma Installation Guide
+Learn how to install Arch Linux with KDE Plasma.
+
 <ol>
 <li>Download Arch Linux ISO</li>
 <li>Burn it to a USB flash</li>
 <li>Boot it (make sure <b>secure boot</b> is disabled).</li>
 </ol>
 
-### 1. [Optional] Connect to Wi-Fi (on Ethernet, you don't have to do this):
+### [Optional] Connect to Wi-Fi (on Ethernet, you don't have to do this):
 <pre>
   $ iwctl
   [iwd]# station wlan0 get-networks
@@ -13,12 +16,7 @@
   $ ping archlinux.org
 </pre>
 
-### 2. Synchronize packages:
-<pre>
-  $ pacman -Syy
-</pre>
-
-### 3. Disk partitioning (using fdisk):
+### Disk partitioning (using fdisk):
 <pre>
   $ fdisk /dev/nvme0n1
   <i>[repeat this command until existing partitions are deleted]</i>
@@ -48,14 +46,14 @@
   Command (m for help): <b>w</b>
 </pre>
 
-### 4. Create filesystems on created disk partitions:
+### Create filesystems on created disk partitions:
 <pre>
   $ mkfs.fat -F 32 /dev/nvme0n1p1
   $ mkswap /dev/nvme0n1p2
   $ mkfs -t ext4 /dev/nvme0n1p3
 </pre>
 
-### 5. Mount all filesystems to /mnt:
+### Mount all filesystems to /mnt:
 <pre>
   $ mount /dev/nvme0n1p3 /mnt
   $ mkdir -p /mnt/boot/efi
@@ -63,14 +61,19 @@
   $ swapon /dev/nvme0n1p2
 </pre>
 
-### 6. Install essential packages into new filesystem and generate fstab:
+### Update your mirrors to get fastest download speed on pacstrap:
+<pre>
+  $ reflector --country Brazil --protocol https --latest 5 --save /etc/pacman.d/mirrorlist --sort rate --verbose
+</pre>
+
+### Install essential packages into new filesystem and generate fstab:
 <pre>
   <i>[install amd-ucode for AMD chipset or intel-ucode for INTEL chipset]</i>
   $ pacstrap /mnt base linux linux-firmware amd-ucode base-devel grub efibootmgr nano networkmanager
   $ genfstab -U /mnt > /mnt/etc/fstab
 </pre>
 
-### 7. Basic configuration of new system:
+### Basic configuration of new system:
 <pre>
   $ arch-chroot /mnt
   <i>[uncomment your locales, i.e. 'en_US.UTF-8' or 'pt_BR.UTF-8']</i>
@@ -81,14 +84,14 @@
   $ hwclock --systohc
 </pre>
 
-### 8. Setup hostname and usernames:
+### Setup hostname and usernames:
 <pre>
   $ echo <i>yourhostname</i> > /etc/hostname
   $ nano /etc/hosts
       <i>127.0.0.1 localhost</i>
       <i>::1 localhost</i>
       <i>127.0.1.1 yourhostname</i>
-  $ useradd -m -G wheel,storage,power,audio,video -s /bin/bash yourusername
+  $ useradd -m -G wheel,storage,power,audio,video,uucp -s /bin/bash yourusername
   $ passwd root
   $ passwd yourusername
   $ EDITOR=nano visudo
@@ -96,22 +99,18 @@
       <i>%wheel ALL=(ALL) ALL</i>
 </pre>
 
-### 9. Enable networking:
+### Enable networking:
 <pre>
   $ systemctl enable NetworkManager
 </pre>
 
-### 10. Install and setup GRUB:
+### Install and setup GRUB:
 <pre>
-  $ efibootmgr -u
-  <i>[if you don't any boot devices after running the command above, type the command below]</i>
-  $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable
-  <i>[if the command "efibootmgr -u" showed boot devices, type the command below]</i>
-  $ grub-install /dev/nvme0n1
+  $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
   $ grub-mkconfig -o /boot/grub/grub.cfg
 </pre>
 
-### 11. Exit chroot, unmount all disks and reboot:
+### Exit chroot, unmount all disks and reboot:
 <pre>
   $ exit
   $ umount -R /mnt
@@ -119,27 +118,27 @@
 </pre>
 
 <h1 align="center">
-    Setup Userspace and KDE
+    Setup Userspace and Hyprland
 </h1>
 
-### 12. Activate time synchronization using NTP:
+### Activate time synchronization using NTP:
 <pre>
   $ timedatectl set-ntp true
 </pre>
 
-### 13. [Optional] Connect to Wi-Fi using nmcli:
+### [Optional] Connect to Wi-Fi using nmcli:
 <pre>
   $ nmcli device wifi connect &lt;Network's name&gt; password &lt;Network's password&gt;
 </pre>
 
-### 14. Enable multilib (32-bit packages):
+### Enable multilib (32-bit packages):
 <pre>
   $ sudo nano /etc/pacman.conf
   <i>[uncomment [multilib] section]</i>
   $ sudo pacman -Sy
 </pre>
 
-### 15. Install GPU drivers (and packages for gaming):
+### Install GPU drivers (and packages for gaming):
 <b>AMD</b>
 <pre>
   $ sudo pacman -S xf86-video-amdgpu mesa lib32-mesa
@@ -151,75 +150,121 @@
   $ sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils
 </pre>
 
-### 16. [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
+### [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for SSDs and thinly-provisioned storage:
 <pre>
   $ sudo systemctl enable fstrim.timer
 </pre>
 
-### 17. Install KDE Plasma and some useful packages:
+### Install useful packages:
 <pre>
-  $ sudo pacman -S plasma sddm
-  $ sudo pacman -S konsole kate dolphin mpv
-  <i>[bluedevil is the KDE's Bluetooth tool]</i>
-  $ sudo pacman -S bluedevil
-  $ sudo pacman -S git btop wget fd
-  $ sudo pacman -S bash-completion openssh
-  $ sudo systemctl enable bluetooth.service
-  $ sudo systemctl start bluetooth.service
+  $ sudo pacman -S git btop wget fd curl unzip
+  $ sudo pacman -S bash-completion openssh eza
+  $ sudo pacman -S python python-gobject
+  $ sudo pacman -S ripgrep fuse2
+  $ sudo pacman -S reflector less sassc
+  curl -fsSL https://pyenv.run | bash
 </pre>
 
-### 18. Install yay and a fast image viewer:
+### Install yay:
 <pre>
   $ git clone https://aur.archlinux.org/yay.git
   $ cd yay
   $ makepkg -si
   $ cd ..
   $ rm -r yay
+</pre>
+
+### Install Hyprland and some useful packages:
+<pre>
+  $ sudo pacman -S plasma sddm kde-applications
+  $ sudo pacman -S mpv
   $ yay -S qimgv-git
 </pre>
 
-### 19. Reboot:
+### Install sound drivers and sound support:
+<pre>
+  $ sudo pacman -S pipewire wireplumber pipewire-audio
+  $ sudo pacman -S pipewire-alsa pipewire-pulse
+  $ sudo pacman -S pipewire-jack  <i># If it asks to replace jack-2, replace it.</i>
+  $ sudo pacman -S lib32-pipewire pavucontrol
+</pre>
+
+### Enable bluetooth support:
+<pre>
+  $ sudo pacman -S bluez bluez-utils
+  $ sudo systemctl enable bluetooth
+</pre>
+
+### Install additional softwares:
+<pre>
+  $ sudo pacman -S steam discord spotify-launcher
+  $ sudo pacman -S fastfetch qbittorrent
+  $ yay -S visual-studio-code-bin
+  $ yay -S google-chrome
+</pre>
+
+### Disable the loud beep sound in TTY:
+<pre>
+  $ sudo rmmod pcspkr
+</pre>
+
+### Reboot:
 <pre>
   $ reboot
 </pre>
 
-### 20. Install additional softwares:
-<pre>
-  $ sudo pacman -S steam discord
-  $ sudo pacman -S fastfetch qbittorrent
-  $ yay -S spotify visual-studio-code-bin
-</pre>
+<h1 align="center">
+    Troubleshooting and additional stuff
+</h1>
 
-### 21. Install HDR utilities and how to use it:
+### Install HDR utilities and how to use it:
 <pre>
   $ sudo pacman -S gamescope
   $ yay -S vk-hdr-layer-kwin6-git
-  
-  <i>In Steam, to enable HDR for a single game, set the following Launch options:</i>
+
+  <i>[In Steam, to enable HDR for a single game, set the following Launch options]</i>
   DXVK_HDR=1 gamescope -f -W 2560 -H 1440 --force-grab-cursor --hdr-enabled -- %command%
   
-  <i>To play a video with HDR using MPV:</i>
-  $ sudo nano /etc/environment
-  <i>[Add the following line:]</i>
-  ENABLE_HDR_WSI=1
-  $ mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
+  <i>[To play a video with HDR using MPV, do the following]</i>
+  $ ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "path/to/video"
 </pre>
 
-### 22. Fix cedilla on us-intl with dead keys:
+### Fix cedilla on us-intl with dead keys:
 <pre>
   $ sudo nano /usr/lib/gtk-3.0/3.0.0/immodules.cache
   <i>[Find the lines starting with "cedilla" "Cedilla" and add :en to the line]</i>
 
   $ sudo sed -i /usr/share/X11/locale/en_US.UTF-8/Compose -e 's/ć/ç/g' -e 's/Ć/Ç/g'
 
-  $ sudo nano /etc/environment
-  <i>[Add the following lines:]</i>
+  <i>[Add the following environment variables]</i>
   GTK_IM_MODULE=cedilla
   QT_IM_MODULE=cedilla
 </pre>
 
-### 23. Add permission to serial ports:
+### Add permission to serial ports:
 <pre>
   $ usermod -a -G uucp $USER
   $ reboot
+</pre>
+
+### How to change DNS with NetworkManager:
+<pre>
+  <i>[List your connections with the command below]</i>
+  $ nmcli connection
+
+  $ nmcli connection edit Wired\ connection\ 1
+  nmcli> set ipv4.ignore-auto-dns yes
+  nmcli> set ipv4.dns 1.1.1.1
+  nmcli> set ipv4.dns 1.0.0.1
+  nmcli> set ipv6.ignore-auto-dns yes
+  nmcli> set ipv6.dns 2606:4700:4700::1111
+  nmcli> set ipv6.dns 2606:4700:4700::1001
+
+  nmcli> save persistent
+  nmcli> quit
+
+  $ sudo systemctl restart NetworkManager
+
+  <i>[You can check if the settings were applied]</i>
+  $ cat /etc/resolv.conf
 </pre>
