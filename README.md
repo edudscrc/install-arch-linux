@@ -157,11 +157,13 @@ Learn how to install Arch Linux with KDE Plasma.
 
 ### Install useful packages:
 <pre>
-  $ sudo pacman -S git btop wget fd curl unzip
+  $ sudo pacman -S git btop wget fd unzip
   $ sudo pacman -S bash-completion openssh eza
   $ sudo pacman -S python python-gobject
   $ sudo pacman -S ripgrep fuse2
   $ sudo pacman -S reflector less sassc
+
+  <i>To manage different Python versions:</i>
   curl -fsSL https://pyenv.run | bash
 </pre>
 
@@ -174,14 +176,12 @@ Learn how to install Arch Linux with KDE Plasma.
   $ rm -r yay
 </pre>
 
-### Install Hyprland and some useful packages:
+### Install KDE Plasma:
 <pre>
   $ sudo pacman -S plasma sddm kde-applications
-  $ sudo pacman -S mpv
-  $ yay -S qimgv-git
 </pre>
 
-### Install sound drivers and sound support:
+### Install sound drivers and sound support (use the flag --needed because some of these will probably be already installed):
 <pre>
   $ sudo pacman -S pipewire wireplumber pipewire-audio
   $ sudo pacman -S pipewire-alsa pipewire-pulse
@@ -191,7 +191,7 @@ Learn how to install Arch Linux with KDE Plasma.
 
 ### Enable bluetooth support:
 <pre>
-  $ sudo pacman -S bluez bluez-utils
+  $ sudo pacman -S bluez bluez-utils --needed
   $ sudo systemctl enable bluetooth
 </pre>
 
@@ -201,11 +201,6 @@ Learn how to install Arch Linux with KDE Plasma.
   $ sudo pacman -S fastfetch qbittorrent
   $ yay -S visual-studio-code-bin
   $ yay -S google-chrome
-</pre>
-
-### Disable the loud beep sound in TTY:
-<pre>
-  $ sudo rmmod pcspkr
 </pre>
 
 ### Reboot:
@@ -245,26 +240,4 @@ Learn how to install Arch Linux with KDE Plasma.
 <pre>
   $ usermod -a -G uucp $USER
   $ reboot
-</pre>
-
-### How to change DNS with NetworkManager:
-<pre>
-  <i>[List your connections with the command below]</i>
-  $ nmcli connection
-
-  $ nmcli connection edit Wired\ connection\ 1
-  nmcli> set ipv4.ignore-auto-dns yes
-  nmcli> set ipv4.dns 1.1.1.1
-  nmcli> set ipv4.dns 1.0.0.1
-  nmcli> set ipv6.ignore-auto-dns yes
-  nmcli> set ipv6.dns 2606:4700:4700::1111
-  nmcli> set ipv6.dns 2606:4700:4700::1001
-
-  nmcli> save persistent
-  nmcli> quit
-
-  $ sudo systemctl restart NetworkManager
-
-  <i>[You can check if the settings were applied]</i>
-  $ cat /etc/resolv.conf
 </pre>
